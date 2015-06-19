@@ -867,7 +867,8 @@ def sskernel(spiketimes, tin=None, w=None, bootstrap=False):
         for ii in range(nbs):
             idx = np.floor(np.random.rand(N) * N).astype(int)
             xb = spiketimes[idx]
-            y_histb, bins = np.histogram(xb, np.r_[t - dt/2, t[-1]+dt/2]) / dt / N
+            y_histb, bins = np.histogram(xb, np.r_[t - dt/2, t[-1]+dt/2])
+            y_histb = y_histb / dt / N
             yb_buf = fftkernel(y_histb, optw / dt).real
             yb_buf = yb_buf / np.sum(yb_buf * dt)
             yb[ii,:] = np.interp(tin, t, yb_buf)
