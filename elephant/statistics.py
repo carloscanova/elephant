@@ -47,10 +47,19 @@ def isi(spiketrain, axis=-1):
     if axis is None:
         axis = -1
     if isinstance(spiketrain, neo.SpikeTrain):
+<<<<<<< HEAD
         intervals = np.diff(
             np.sort(spiketrain.times.view(pq.Quantity)), axis=axis)
     else:
         intervals = np.diff(np.sort(spiketrain), axis=axis)
+=======
+        intervals = np.diff(spiketrain.times.view(pq.Quantity), axis=axis)
+    else:
+        intervals = np.diff(spiketrain, axis=axis)
+
+    if hasattr(spiketrain, 'waveforms'):
+        intervals = pq.Quantity(intervals.magnitude, units=spiketrain.units)
+>>>>>>> 63556fa233a6efe0f321ba285ea214fb8533cdf3
     return intervals
 
 
@@ -610,13 +619,13 @@ def instantaneous_rate(spiketrain, sampling_period, kernel='auto',
         The kernel is used for convolution with the spike train and its
         standard deviation determines the time resolution of the instantaneous
         rate estimation.
-        Default: 'auto'. In this case, the optimized kernel width for the 
+        Default: 'auto'. In this case, the optimized kernel width for the
         rate estimation is calculated according to [1] and with this width
-        a gaussian kernel is constructed. Automatized calculation of the 
+        a gaussian kernel is constructed. Automatized calculation of the
         kernel width is not available for other than gaussian kernel shapes.
     cutoff : float
         This factor determines the cutoff of the probability distribution of
-        the kernel, i.e., the considered width of the kernel in terms of 
+        the kernel, i.e., the considered width of the kernel in terms of
         multiples of the standard deviation sigma.
         Default: 5.0
     t_start : Time Quantity (optional)
