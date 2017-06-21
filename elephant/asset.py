@@ -374,7 +374,7 @@ def _time_slice(signal, t_start, t_stop):
 
     # Put the retained values and times into a new AnalogSignal
     sliced_signal = neo.AnalogSignal(
-        signal[elements_to_keep].view(pq.Quantity), t_start=times[0],
+        signal.magnitude[elements_to_keep]*signal.units, t_start=times[0],
         sampling_period=signal.sampling_period)
 
     return sliced_signal
